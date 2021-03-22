@@ -3,6 +3,9 @@
 #include <algorithm>  // copy, fill
 #include <cassert>    // assert
 #include <stdexcept>  // logic_error, invalid_argument
+#include <vector>
+
+using namespace std;
 
 namespace itis {
 
@@ -10,35 +13,68 @@ ArrayStack::ArrayStack(int capacity) {
   if (capacity <= 0) {
     throw std::invalid_argument("initial capacity must be greater than zero");
   }
-
   // TODO: напишите здесь свой код ...
+    Element* array = new Element[capacity];
+  for (int i = 0; i < capacity; i ++) {
+      array[i] = Element::UNDEFINED;
+  }
+  capacity_ = capacity;
+  data_ = array;
+
 }
 
 ArrayStack::~ArrayStack() {
   // TODO: напишите здесь свой код ...
+  delete[] data_;
+  data_ = nullptr;
+  size_ = 0;
+  capacity_ = 0;
 }
 
 void ArrayStack::Push(Element e) {
   // TODO: напишите здесь свой код ...
+  if (size_ == capacity_) {
+      resize(capacity_ + kCapacityGrowthCoefficient);
+  }
+  data_[size_] = e;
+  size_ ++;
 }
 
 void ArrayStack::Pop() {
   if (size_ == 0) {
-    throw std::logic_error("cannot pop out from empty stack");
+      throw std::logic_error("cannot pop out from empty stack");
   }
-
+  data_[size_-1] = Element::UNDEFINED;
+  size_--;
   // TODO: напишите здесь свой код ...
+
 }
 
 void ArrayStack::Clear() {
   // TODO: напишите здесь свой код ...
+  for (int  i =0; i < size_; i ++) {
+      data_[i] = Element::UNDEFINED;
+  }
+  size_ = 0;
 }
 
 void ArrayStack::resize(int new_capacity) {
   assert(new_capacity > size_);
+  if (new_capacity > capacity_) {
+      Element* new_array = new Element[new_capacity];
+      // TODO: напишите здесь свой код ...
+      for (int i = 0; i < size_; i++) {
+          new_array[i] = data_[i];
+      }
+      std::fill(new_array + size_, new_array + capacity_, Element::UNDEFINED);
+      delete[] data_;
+      data_ = new_array;
+      capacity_ = new_capacity;
+  }
 
-  // TODO: напишите здесь свой код ...
 }
+
+
 
 // === РЕАЛИЗОВАНО ===
 
