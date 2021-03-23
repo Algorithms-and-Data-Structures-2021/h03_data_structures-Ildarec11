@@ -20,9 +20,13 @@ void LinkedDequeue::Enqueue(Element e) {
 void LinkedDequeue::EnqueueFront(Element e) {
   // TODO: напишите здесь свой код ...
   DoublyNode* new_node = new DoublyNode(e, nullptr, front_);
-  front_ = new_node;
-  if (size_ == 0) {
+  if (size_ != 0) {
+        front_->previous = new_node;
+        front_ = new_node;
+    } else {
       back_ = new_node;
+      front_ = new_node;
+
   }
   size_ ++;
 }
@@ -39,6 +43,7 @@ void LinkedDequeue::Dequeue() {
       DoublyNode* node_to_delete = front_;
       front_ = front_->next;
       delete node_to_delete;
+      front_->previous = nullptr;
   }
   size_ --;
 
@@ -57,6 +62,7 @@ void LinkedDequeue::DequeueBack() {
         DoublyNode *node_to_delete = back_;
         back_ = back_->previous;
         delete node_to_delete;
+        back_->next = nullptr;
     }
     size_--;
 
