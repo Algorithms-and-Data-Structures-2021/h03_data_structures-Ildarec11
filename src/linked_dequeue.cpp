@@ -5,17 +5,47 @@
 namespace itis {
 
 void LinkedDequeue::Enqueue(Element e) {
+    DoublyNode* new_node  = new DoublyNode(e, back_, nullptr);
+    if (size_ != 0) {
+        back_->next = new_node;
+        back_ = new_node;
+    } else {
+        front_ = new_node;
+        back_ = new_node;
+    }
+    size_ ++;
   // TODO: напишите здесь свой код ...
 }
 
 void LinkedDequeue::EnqueueFront(Element e) {
   // TODO: напишите здесь свой код ...
+  DoublyNode* new_node = new DoublyNode(e, nullptr, front_);
+  if (size_ != 0) {
+        front_->previous = new_node;
+        front_ = new_node;
+    } else {
+      back_ = new_node;
+      front_ = new_node;
+
+  }
+  size_ ++;
 }
 
 void LinkedDequeue::Dequeue() {
   if (size_ == 0) {
     throw std::logic_error("cannot not dequeue from empty queue");
   }
+  if (size_ == 1) {
+      delete front_;
+      front_ = nullptr;
+      back_ = nullptr;
+  } else {
+      DoublyNode* node_to_delete = front_;
+      front_ = front_->next;
+      delete node_to_delete;
+      front_->previous = nullptr;
+  }
+  size_ --;
 
   // TODO: напишите здесь свой код ...
 }
@@ -24,12 +54,40 @@ void LinkedDequeue::DequeueBack() {
   if (size_ == 0) {
     throw std::logic_error("cannot not dequeue from empty queue");
   }
+    if (size_ == 1) {
+        delete back_;
+        front_ = nullptr;
+        back_ = nullptr;
+    } else {
+        DoublyNode *node_to_delete = back_;
+        back_ = back_->previous;
+        delete node_to_delete;
+        back_->next = nullptr;
+    }
+    size_--;
 
   // TODO: напишите здесь свой код ...
 }
 
 void LinkedDequeue::Clear() {
   // TODO: напишите здесь свой код ...
+  if (size_ == 1) {
+      delete front_;
+  } else {
+      if (size_ != 0) {
+          DoublyNode *current_node = front_;
+          DoublyNode *next_node = front_->next;
+          delete current_node;
+          for (int i = 0; i < size_ - 1; i++) {
+              current_node = next_node;
+              next_node = next_node->next;
+              delete current_node;
+          }
+      }
+  }
+        size_ = 0;
+        front_ = nullptr;
+        back_ = nullptr;
 }
 
 // === РЕАЛИЗОВАНО ===
