@@ -78,10 +78,10 @@ void LinkedDequeue::Clear() {
           DoublyNode *current_node = front_;
           DoublyNode *next_node = front_->next;
           delete current_node;
-          while (next_node != NULL) {
+          for (int i = 0; i < size_ - 1; i++) {
               current_node = next_node;
-              delete current_node;
               next_node = next_node->next;
+              delete current_node;
           }
       }
   }
